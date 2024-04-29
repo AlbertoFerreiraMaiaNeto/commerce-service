@@ -3,7 +3,7 @@
 ### Service for creating, reading, updating, and deleting products in the catalog, as well as processing orders.
 
 -----
-##  Funcionalidades Principais:
+##  Funcionalidades Principais: 
 
 ### Gerenciamento de Produtos:
 

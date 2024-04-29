@@ -2,7 +2,7 @@ package org.acme.flow.order.items;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import org.acme.persistence.dto.KafkaPayloadDTO;
+import org.acme.persistence.dto.KafkaOrderDTO;
 import org.acme.persistence.dto.OrderDTO;
 import org.acme.persistence.dto.ProductPayloadDTO;
 import org.acme.persistence.dto.RequestProductDTO;
@@ -15,7 +15,7 @@ import java.util.List;
 @Singleton
 public class ValidateProductAndAmountFlowItem {
 
-    public KafkaPayloadDTO validate (OrderDTO orderDTO, List<Product> productList) {
+    public KafkaOrderDTO validate (OrderDTO orderDTO, List<Product> productList) {
 
         var kafkaPayload = getConfirmedAndInsufficientAmountProducts(orderDTO, productList);
 
@@ -24,7 +24,7 @@ public class ValidateProductAndAmountFlowItem {
         return kafkaPayload;
     }
 
-    private static void getNonExistsProducts(KafkaPayloadDTO kafkaPayload) {
+    private static void getNonExistsProducts(KafkaOrderDTO kafkaPayload) {
         List<ProductPayloadDTO> auxNonExistsProducts = new ArrayList<>(kafkaPayload.getNonExistsProducts());
 
         auxNonExistsProducts.forEach(nonExistsProduct -> {
@@ -46,7 +46,7 @@ public class ValidateProductAndAmountFlowItem {
         });
     }
 
-    private static KafkaPayloadDTO getConfirmedAndInsufficientAmountProducts(OrderDTO orderDTO, List<Product> productList) {
+    private static KafkaOrderDTO getConfirmedAndInsufficientAmountProducts(OrderDTO orderDTO, List<Product> productList) {
         List<ProductPayloadDTO> confirmedProducts = new ArrayList<>();
         List<ProductPayloadDTO> insufficientAmountProducts = new ArrayList<>();
         List<ProductPayloadDTO> nonExistsProducts = new ArrayList<>();
@@ -66,7 +66,7 @@ public class ValidateProductAndAmountFlowItem {
             });
         });
 
-        return KafkaPayloadDTO.builder()
+        return KafkaOrderDTO.builder()
                 .confirmedProducts(confirmedProducts)
                 .insufficientAmountProducts(insufficientAmountProducts)
                 .nonExistsProducts(nonExistsProducts)

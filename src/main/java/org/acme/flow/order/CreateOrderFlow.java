@@ -5,7 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.acme.enums.StatusOrder;
 import org.acme.flow.order.items.ValidateProductAndAmountFlowItem;
-import org.acme.persistence.dto.KafkaPayloadDTO;
+import org.acme.kafka.KafkaOrderProducer;
+import org.acme.persistence.dto.KafkaOrderDTO;
 import org.acme.persistence.dto.OrderDTO;
 import org.acme.persistence.dto.OrderResponseDTO;
 import org.acme.persistence.model.Category;
@@ -24,6 +25,7 @@ public class CreateOrderFlow {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final KafkaOrderProducer kafkaOrderProducer;
     private final ValidateProductAndAmountFlowItem validateProductAndAmountFlowItem;
 
     @Transactional
@@ -39,6 +41,7 @@ public class CreateOrderFlow {
         order.setOrderProducts(orderProducts);
 
         this.orderService.save(order);
+        this.kafkaOrderProducer.publish(kafkaPayload);
 
         return OrderResponseDTO.builder()
                 .orderOwner(orderDTO.getOrderOwner())
@@ -47,7 +50,7 @@ public class CreateOrderFlow {
                 .build();
     }
 
-    private static List<OrderProduct> getOrderProducts(Order order, KafkaPayloadDTO kafkaPayload) {
+    private static List<OrderProduct> getOrderProducts(Order order, KafkaOrderDTO kafkaPayload) {
         List<OrderProduct> orderProducts = new ArrayList<>();
 
         kafkaPayload.getConfirmedProducts().forEach(product -> {

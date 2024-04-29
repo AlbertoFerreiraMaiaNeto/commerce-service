@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class KafkaPayloadDTO {
+public class KafkaOrderDTO {
 
     private OrderDTO orderDTO;
 

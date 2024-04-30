@@ -21,8 +21,6 @@ public class KafkaOrderDTO {
 
     private List<ProductPayloadDTO> insufficientAmountProducts;
 
-    private List<ProductPayloadDTO> nonExistsProducts;
-
     private StatusOrder statusOrder;
 }
 

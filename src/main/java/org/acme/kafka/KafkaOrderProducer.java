@@ -18,7 +18,7 @@ public class KafkaOrderProducer {
 
     public void publish(KafkaOrderDTO kafkaOrderDTO) {
         try{
-            this.emitter.send(kafkaOrderDTO);
+            this.emitter.send(kafkaOrderDTO).toCompletableFuture().join();
             log.info("Sent message to Kafka, Order Owner: {}", kafkaOrderDTO.getOrderDTO().getOrderOwner());
         } catch (Exception e) {
             log.error("Error to trying send message to Kafka, Order Owner: {}", kafkaOrderDTO.getOrderDTO().getOrderOwner());

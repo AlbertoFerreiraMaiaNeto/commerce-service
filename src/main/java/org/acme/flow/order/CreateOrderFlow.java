@@ -30,24 +30,30 @@ public class CreateOrderFlow {
 
     @Transactional
     public OrderResponseDTO createOrder (OrderDTO orderDTO) {
-        var productList = this.productService.findAll();
+        try {
+            var productList = this.productService.findAll();
 
-        var kafkaPayload = this.validateProductAndAmountFlowItem.validate(orderDTO, productList);
+            var kafkaPayload = this.validateProductAndAmountFlowItem.validate(orderDTO, productList);
 
-        var order = Order.builder().orderOwner(orderDTO.getOrderOwner()).orderStatus(StatusOrder.PENDING.name()).build();
+            var order = Order.builder().orderOwner(orderDTO.getOrderOwner()).orderStatus(StatusOrder.PENDING.name()).build();
 
-        List<OrderProduct> orderProducts = getOrderProducts(order, kafkaPayload);
+            List<OrderProduct> orderProducts = getOrderProducts(order, kafkaPayload);
 
-        order.setOrderProducts(orderProducts);
+            order.setOrderProducts(orderProducts);
 
-        this.orderService.save(order);
-        this.kafkaOrderProducer.publish(kafkaPayload);
+            this.orderService.save(order);
 
-        return OrderResponseDTO.builder()
-                .orderOwner(orderDTO.getOrderOwner())
-                .status(StatusOrder.PENDING)
-                .productList(kafkaPayload.getConfirmedProducts())
-                .build();
+            this.kafkaOrderProducer.publish(kafkaPayload);
+
+            return OrderResponseDTO.builder()
+                    .orderOwner(orderDTO.getOrderOwner())
+                    .status(StatusOrder.PENDING)
+                    .productList(kafkaPayload.getConfirmedProducts())
+                    .build();
+        }
+        catch(Exception e) {
+            throw new RuntimeException("Error processing the order.", e);
+        }
     }
 
     private static List<OrderProduct> getOrderProducts(Order order, KafkaOrderDTO kafkaPayload) {

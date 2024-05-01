@@ -29,6 +29,9 @@ public class Order {
     @Column(name = "order_owner")
     private String orderOwner;
 
+    @Column(name = "order_owner_email")
+    private String orderOwnerEmail;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts;
 

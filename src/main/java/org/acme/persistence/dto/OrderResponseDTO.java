@@ -17,6 +17,8 @@ public class OrderResponseDTO {
 
     private String orderOwner;
 
+    private String orderOwnerEmail;
+
     private List<ProductPayloadDTO> productList;
 
     private StatusOrder status;

@@ -21,6 +21,7 @@ CREATE TABLE product (
 CREATE TABLE tb_order (
         order_id bigserial PRIMARY KEY not null,
         order_owner varchar(255),
+        order_owner_email varchar(255),
         order_status varchar(100)
     );
 

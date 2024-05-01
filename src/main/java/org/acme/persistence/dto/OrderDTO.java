@@ -16,6 +16,8 @@ public class OrderDTO {
 
     private String orderOwner;
 
+    private String orderOwnerEmail;
+
     private List<RequestProductDTO> productList;
 }
 

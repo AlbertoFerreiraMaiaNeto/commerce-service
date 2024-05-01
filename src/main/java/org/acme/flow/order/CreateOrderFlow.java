@@ -35,7 +35,11 @@ public class CreateOrderFlow {
 
             var kafkaPayload = this.validateProductAndAmountFlowItem.validate(orderDTO, productList);
 
-            var order = Order.builder().orderOwner(orderDTO.getOrderOwner()).orderStatus(StatusOrder.PENDING.name()).build();
+            var order = Order.builder()
+                    .orderOwner(orderDTO.getOrderOwner())
+                    .orderOwnerEmail(orderDTO.getOrderOwnerEmail())
+                    .orderStatus(StatusOrder.PENDING.name())
+                    .build();
 
             List<OrderProduct> orderProducts = getOrderProducts(order, kafkaPayload);
 
@@ -47,6 +51,7 @@ public class CreateOrderFlow {
 
             return OrderResponseDTO.builder()
                     .orderOwner(orderDTO.getOrderOwner())
+                    .orderOwnerEmail(orderDTO.getOrderOwnerEmail())
                     .status(StatusOrder.PENDING)
                     .productList(kafkaPayload.getConfirmedProducts())
                     .build();

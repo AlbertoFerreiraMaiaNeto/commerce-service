@@ -56,4 +56,19 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAll() {
         return this.productRepository.findAll().stream().toList();
     }
+
+    @Override
+    public void updateProductsAmountByNameAndCategory(List<Product> products) {
+        products.forEach(product -> {
+            this.productRepository.update(("set amount = :amount where name = :name and category = :category"),
+                    Parameters.with("name", product.getName())
+                            .and("category", product.getCategory())
+                            .and("amount", product.getAmount()));
+            invalidateProductsCache(product);
+        });
+    }
+
+
+    @CacheInvalidate(cacheName = "product-cache", keyGenerator = ProductCacheKeyGenerator.class)
+    public void invalidateProductsCache(Product product) {}
 }

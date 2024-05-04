@@ -37,5 +37,8 @@ public class Order {
 
     @Column(name = "order_status")
     private String orderStatus;
+
+    @Column(name = "total_order_price")
+    private double totalOrderPrice;
 }
 

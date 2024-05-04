@@ -52,6 +52,7 @@ public class ValidateProductAndAmountFlowItem {
                 .name(product.getName())
                 .category(product.getCategory().getName())
                 .amount(requestProduct.getAmount())
+                .unitPrice(product.getUnitPrice())
                 .build();
     }
 }

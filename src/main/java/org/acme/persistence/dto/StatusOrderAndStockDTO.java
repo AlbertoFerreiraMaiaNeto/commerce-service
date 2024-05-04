@@ -3,7 +3,6 @@ package org.acme.persistence.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.acme.enums.OrderStatus;
 
 import java.util.List;
 
@@ -13,14 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OrderResponseDTO {
+public class StatusOrderAndStockDTO {
 
-    private String orderOwner;
+    private String orderStatus;
 
-    private String orderOwnerEmail;
-
-    private List<ProductPayloadDTO> productList;
-
-    private OrderStatus status;
+    private List<RequestProductDTO> productList;
 }
 

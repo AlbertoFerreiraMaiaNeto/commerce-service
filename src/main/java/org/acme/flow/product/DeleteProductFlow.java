@@ -20,7 +20,7 @@ public class DeleteProductFlow {
     public void deleteProduct(String categoryName, String productName) {
         var category = this.findCategoryFlowItem.findCategory(categoryName);
 
-        var currentProduct = productService.findProductByNameAndCategory(productName, category);
+        var currentProduct = this.productService.findProductByNameAndCategory(productName, category);
 
         if(Objects.isNull(currentProduct)) {
             throw new ProductNotFoundException();

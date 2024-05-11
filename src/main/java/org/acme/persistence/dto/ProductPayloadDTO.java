@@ -2,6 +2,8 @@ package org.acme.persistence.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,4 +16,8 @@ public class ProductPayloadDTO {
     private String category;
 
     private int amount;
+
+    private BigDecimal unitPrice;
+
+    private double totalPricePerProduct;
 }

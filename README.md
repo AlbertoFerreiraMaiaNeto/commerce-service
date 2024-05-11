@@ -2,54 +2,64 @@
 
 ### Service for creating, reading, updating, and deleting products in the catalog, as well as processing orders.
 
------
-##  Funcionalidades Principais: 
+----
 
-### Gerenciamento de Produtos:
+### Architecture
 
-Adicione, atualize, recupere e remova produtos do catálogo.
-
-### Gerenciamento de Categorias:
-Ative ou desative categorias e ajuste a disponibilidade dos produtos.
-
-### Validação de Categoria:
-Produtos de categorias desativadas não são exibidos, e a própria categoria também é ocultada.
+![Architecture](src/main/assets/architecture-draw.png)
 
 -----
-### Tratamento de Erros
-O catálogo de produtos implementa tratamento de erros para garantir a robustez do sistema. Aqui estão as exceções tratadas:
+## Main features: 
 
+### Product Management:
+Add, update, retrieve and remove products from the catalog.
 
-| Código de Erro | Mensagem de Erro |
-| --------------:| ------------|
-| C01	| Category not found.| 
-| C02	| This Category Already Exists.| 
-| P01	| Product not found. |
-| P02	| This Product Already Exists |
+### Category Management:
+Activate or deactivate categories and adjust product availability.
 
------
-### Configurações:
-As configurações do catálogo de produtos estão disponíveis no arquivo application.properties. 
-Isso inclui configurações relacionadas ao Cache Caffeine e outras opções específicas do serviço.
+### Category Validation:
+Products from disabled categories are not displayed, and the category itself is also hidden.
+
+### Order Management:
+Create an order, update the order status and quantity of products in stock according to the quantity of products that have been purchased.
 
 -----
-### Como Contribuir
-Se deseja contribuir para o desenvolvimento ou correção de problemas, sinta-se à vontade para abrir problemas ou enviar pull requests. Certifique-se de seguir as diretrizes de contribuição do projeto.
+### Error Handling
+The commerce-service implements error handling to ensure system robustness. Here are the exceptions handled:
 
-Agradeço por escolher o meu catálogo de produtos. Espero que seja uma experiência valiosa.
+| Error Code | Erro Message                  |
+|-----------:|-------------------------------|
+|       C01	 | Category not found.           | 
+|       C02	 | This Category Already Exists. | 
+|       P01	 | Product not found.            |
+|       P02	 | This Product Already Exists.  |
+|      OR01	 | Order not found.              |
+|      OR02	 | This Status Order Is Invalid. |
+-----
+### Settings:
+Commerce-service settings are available in the application.properties file.
+
+This includes settings related to Caffeine Cache, Postgres, Kafka and other service-specific options.
 
 -----
-### Tecnologias Utilizadas:
+### How to Contribute
+If you want to contribute to development or fixing issues, feel free to open issues or submit pull requests. Be sure to follow the project's contribution guidelines.
+
+-----
+### Technologies Used: 
 Framework: Quarkus
 
-Linguagem: Java
+Language: Java
 
-Banco de Dados: PostgreSQL
+Database: PostgreSQL
 
 Cache: Caffeine
 
+Data Stream: Kafka
+
+Migration: Flyway
 
 -----
-Para acessar o Swagger, execute o projeto e digite no browser: http://localhost:8080/q/swagger-ui
+To access Swagger, run the project and type in the browser: http://localhost:8080/q/swagger-ui
 
 

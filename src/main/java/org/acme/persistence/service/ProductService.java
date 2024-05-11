@@ -18,4 +18,6 @@ public interface ProductService {
     List<Product> findProductsByCategory(Category category);
 
     List<Product> findAll();
+
+    void updateProductsAmountByNameAndCategory(List<Product> products);
 }

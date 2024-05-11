@@ -30,4 +30,7 @@ public class OrderProduct {
 
     @Column(name = "amount")
     private int amount;
+
+    @Column(name = "total_price_per_product")
+    private double totalPricePerProduct;
 }

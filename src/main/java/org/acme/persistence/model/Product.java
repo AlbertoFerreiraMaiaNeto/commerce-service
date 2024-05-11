@@ -30,7 +30,7 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "unitPrice")
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
     @Column(name = "amount")

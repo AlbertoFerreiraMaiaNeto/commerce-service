@@ -2,10 +2,11 @@ package org.acme.flow.product;
 
 import mock.MockCategory;
 import mock.MockProduct;
-import org.acme.exception.ProductAlreadyExistsException;
+import org.acme.exception.ProductNotFoundException;
 import org.acme.flow.product.items.FindCategoryFlowItem;
 import org.acme.persistence.dto.ProductDTO;
 import org.acme.persistence.model.Category;
+import org.acme.persistence.model.Product;
 import org.acme.persistence.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,42 +18,44 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class CreateProductFlowTest {
+class UpdateProductFlowTest {
 
     private ProductService productService;
 
     private FindCategoryFlowItem findCategoryFlowItem;
 
-    private CreateProductFlow createProductFlow;
+    private UpdateProductFlow updateProductFlow;
     private Category category;
+    private Product product;
     private ProductDTO productDTO;
 
     @BeforeEach
     public void setup() {
+        this.product = MockProduct.buildProduct();
         this.category = MockCategory.buildCategory();
         this.productDTO = MockProduct.buildProductDTO();
         this.findCategoryFlowItem = Mockito.mock(FindCategoryFlowItem.class);
         this.productService = Mockito.mock(ProductService.class);
-        this.createProductFlow = new CreateProductFlow(productService, findCategoryFlowItem);
+        this.updateProductFlow = new UpdateProductFlow(productService, findCategoryFlowItem);
     }
 
     @Test
-    void createProductTest() {
+    void updateProductTest() {
         when(this.findCategoryFlowItem.findCategory(any())).thenReturn(category);
-        when(this.productService.findProductByNameAndCategory(productDTO.getName(), category)).thenReturn(null);
+        when(this.productService.findProductByNameAndCategory(productDTO.getName(), category)).thenReturn(product);
 
-        var output = createProductFlow.createProduct(productDTO);
+        var output = updateProductFlow.updateProduct(productDTO, category.getName(), product.getName());
 
-        verify(productService).save(any());
+        verify(productService).update(any());
         assertEquals(productDTO.getName(), output.getName());
 
     }
 
     @Test
-    void mustThrowProductAlreadyExistsException_whenCurrentProductIsNotNull() {
+    void mustThrowProductNotFoundException_whenCurrentProductIsNull() {
         when(this.findCategoryFlowItem.findCategory(any())).thenReturn(category);
-        when(this.productService.findProductByNameAndCategory(productDTO.getName(), category)).thenReturn(MockProduct.buildProduct());
+        when(this.productService.findProductByNameAndCategory(productDTO.getName(), category)).thenReturn(null);
 
-        assertThrows(ProductAlreadyExistsException.class, ()  -> createProductFlow.createProduct(productDTO));
+        assertThrows(ProductNotFoundException.class, ()  -> updateProductFlow.updateProduct(productDTO, category.getName(), product.getName()));
     }
 }

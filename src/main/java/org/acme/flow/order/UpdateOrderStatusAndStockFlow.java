@@ -44,6 +44,8 @@ public class UpdateOrderStatusAndStockFlow {
             this.productService.updateProductsAmountByNameAndCategory(updatedProducts);
         } catch (IllegalArgumentException e) {
             throw new OrderStatusInvalidException();
+        } catch (OrderNotFoundException e) {
+            throw new OrderNotFoundException();
         } catch (Exception e) {
             log.error("Error when update order and products.");
         }
